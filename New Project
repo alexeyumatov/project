@@ -1,0 +1,60 @@
+import pygame
+import sys
+from player import *
+
+pygame.init()
+pygame.mixer.init()
+pygame.time.set_timer(pg.USEREVENT, 2000)
+player_surf = pygame.image.load('car1.png')
+red_surf = pygame.image.load('car2.png')
+
+
+W = 800
+H = 600
+sc = pygame.display.set_mode((W, H))
+clock = pygame.time.Clock()
+
+counter = 0
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (125, 125, 125)
+LIGHT_BLUE = (64, 128, 255)
+GREEN = (0, 200, 64)
+YELLOW = (225, 225, 0)
+PINK = (230, 50, 230)
+FPS = 60
+
+obj = Player(W // 8, H // 2, player_surf)
+RED = Red(red_surf)
+Reds = pg.sprite.Group()
+Reds.add(RED)
+while True:
+    counter += 1
+    # задержка
+    clock.tick(FPS)
+
+    # цикл обработки событий
+    for i in pygame.event.get():
+        if i.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if i.type == pygame.USEREVENT:
+            pass
+    pos = pygame.mouse.get_pos()
+    print(pos[0], pos[1])
+    obj.rect.x = pos[0]
+    obj.rect.y = pos[1]
+
+
+    sc.fill(WHITE)
+
+
+    sc.blit(obj.image, obj.rect)
+
+    if counter % (2 * FPS) == 0:
+        new_red = Red(red_surf)
+        Reds.add(new_red)
+
+    Reds.draw(sc)
+    pg.display.update()
+
